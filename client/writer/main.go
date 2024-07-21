@@ -18,7 +18,7 @@ func main() {
 	}
 
 	cmd := &types.TCPCommand{
-		Command: 1,
+		Command: 0,
 		Data:    file,
 	}
 
