@@ -6,13 +6,14 @@ import (
 	"plays-tcp/types"
 )
 
-var inmem = make(map[string]*[]byte)
+var inmem = make(map[int64]*[]byte)
 
 func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 
 	const (
 		write = "WRITE"
 		read  = "READ"
+		list  = "LIST"
 	)
 
 	cmds := make(map[int]string)
@@ -20,7 +21,6 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 	cmds[1] = read
 
 	cmd := cmdWrapper.Command.Command
-	data := cmdWrapper.Command.Data
 
 	op, ok := cmds[int(cmd)]
 	if ok {
@@ -29,19 +29,19 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 		case read:
 			return handleRead(cmdWrapper)
 		case write:
-			return handleWrite(&data)
+			return handleWrite(cmdWrapper)
 		}
 	}
 	return fmt.Errorf("Unknown Operation %d", int(cmd))
 }
 
-func handleWrite(data *[]byte) error {
-	inmem["test"] = data
+func handleWrite(cmdWrapper *types.TCPCommandWrapper) error {
+	inmem[cmdWrapper.Command.Key] = &cmdWrapper.Command.Data
 	return nil
 }
 
 func handleRead(cmdWrapper *types.TCPCommandWrapper) error {
-	data, ok := inmem["test"]
+	data, ok := inmem[cmdWrapper.Command.Key]
 	conn := cmdWrapper.Conn
 	if ok {
 		_, err := conn.Writer.Writer.Write(*data)

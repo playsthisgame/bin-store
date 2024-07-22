@@ -11,6 +11,7 @@ import (
 
 // an example of a client
 func main() {
+	key := int64(1721607920)
 
 	file := make([]byte, 100)
 	_, err := io.ReadFull(rand.Reader, file)
@@ -21,6 +22,7 @@ func main() {
 	cmd := &types.TCPCommand{
 		Command: 1,
 		Data:    file,
+		Key:     key,
 	}
 
 	data, err := cmd.MarshalBinary()
