@@ -1,3 +1,6 @@
-### plays tcp
+### Bin Store
 
-A generic TCP server for sending commands. This can be used as a template for any TCP based application.
+A store for storing data, using a simple key value pair
+
+- [ ] cache
+- [ ] persist
