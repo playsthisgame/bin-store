@@ -24,7 +24,11 @@ A store for storing data, using a simple key value pair
 ##### [4] MERGE
 
     merges a store on disk with the data in-memory
-    * NEED TO IMPLEMENT
+
+##### [5] CLEAR
+
+    clears the in-memory data
+* Need to implement 
 
 - [ ] develop the client so that its better...
 - [ ] support multiple store?

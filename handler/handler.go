@@ -4,6 +4,7 @@ import (
 	"encoding/gob"
 	"fmt"
 	"log/slog"
+	"maps"
 	"os"
 	"plays-tcp/types"
 	"plays-tcp/utils"
@@ -21,6 +22,7 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 		store = "STORE"
 		load  = "LOAD"
 		merge = "MERGE"
+		clear = "CLEAR"
 	)
 
 	cmds := make(map[int]string)
@@ -29,6 +31,7 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 	cmds[2] = store
 	cmds[3] = load
 	cmds[4] = merge
+	cmds[5] = clear
 
 	cmd := cmdWrapper.Command.Command
 
@@ -46,6 +49,8 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 			return handleLoad(cmdWrapper)
 		case merge:
 			return handleMerge(cmdWrapper)
+		case clear:
+			return handleClear(cmdWrapper)
 		}
 	}
 	return fmt.Errorf("Unknown Operation %d", int(cmd))
@@ -88,7 +93,7 @@ func handleStore(cmdWrapper *types.TCPCommandWrapper) error {
 	return nil
 }
 
-func handleLoad(cmdWrapper *types.TCPCommandWrapper) error {
+func handleLoad(cmdWrapper *types.TCPCommandWrapper) error { // TODO: use loadStore
 	path := ".store" //TODO: does this need to change?
 	filename := string(cmdWrapper.Command.Data)
 	decodeFile, err := os.Open(fmt.Sprintf("%s/%s.gob", path, filename))
@@ -111,9 +116,35 @@ func handleLoad(cmdWrapper *types.TCPCommandWrapper) error {
 	return nil
 }
 
-// TODO: implement this
 func handleMerge(cmdWrapper *types.TCPCommandWrapper) error {
+	smap := make(map[int64]*[]byte)
+	loadStore(cmdWrapper.Command.Data, &smap)
+	maps.Copy(inmem, smap)
+	slog.Info("new inmem", "inmem", inmem)
 	return nil
+}
+
+func handleClear(cmdWrapper *types.TCPCommandWrapper) {
+	inmem = make(map[int64]*[]byte)
+}
+
+func loadStore(data []byte, inmem *map[int64]*[]byte) {
+	path := ".store" //TODO: does this need to change?
+	filename := string(data)
+	decodeFile, err := os.Open(fmt.Sprintf("%s/%s.gob", path, filename))
+	if err != nil {
+		slog.Error("error opening store", "error", err)
+	}
+	defer decodeFile.Close()
+
+	// Create a decoder
+	decoder := gob.NewDecoder(decodeFile)
+
+	// Decode -- We need to pass a pointer otherwise inmem isn't modified
+	err = decoder.Decode(&inmem)
+	if err != nil {
+		slog.Error("error decoding into memory", "error", err)
+	}
 }
 
 // func handleList(cmdWrapper *types.TCPCommandWrapper) error {
