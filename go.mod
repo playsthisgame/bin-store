@@ -1,3 +1,3 @@
-module plays-tcp
+module bin-store
 
 go 1.22.2
