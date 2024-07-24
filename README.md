@@ -25,3 +25,5 @@ A store for storing data, using a simple key value pair
 - [ ] support multiple store?
   - send the store name in the binary
   - you could use an URN as the key i.e. USER:1234
+
+![Workflow](./docs/binstore.jpg "Bin Store Workflow")
