@@ -15,7 +15,6 @@ A store for storing data, using a simple key value pair
 ##### LOAD
 
     load a `.gob` store into memory
-    *Need to implement
 
 ##### READ
 
@@ -23,3 +22,6 @@ A store for storing data, using a simple key value pair
     *TODO the key right now is the unix time, but this will cause a race condition with more clients writing
 
 - [ ] develop the client so that its better...
+- [ ] support multiple store?
+  - send the store name in the binary
+  - you could use an URN as the key i.e. USER:1234

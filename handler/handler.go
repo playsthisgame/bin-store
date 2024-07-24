@@ -19,6 +19,7 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 		read  = "READ"
 		list  = "LIST"
 		store = "STORE"
+		load  = "LOAD"
 	)
 
 	cmds := make(map[int]string)
@@ -26,6 +27,7 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 	cmds[1] = read
 	cmds[2] = list
 	cmds[3] = store
+	cmds[4] = load
 
 	cmd := cmdWrapper.Command.Command
 
@@ -39,6 +41,8 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 			return handleWrite(cmdWrapper)
 		case store:
 			return handleStore(cmdWrapper)
+		case load:
+			return handleLoad(cmdWrapper)
 		}
 	}
 	return fmt.Errorf("Unknown Operation %d", int(cmd))
@@ -78,6 +82,29 @@ func handleStore(cmdWrapper *types.TCPCommandWrapper) error {
 		return err
 	}
 	encodeFile.Close()
+	return nil
+}
+
+func handleLoad(cmdWrapper *types.TCPCommandWrapper) error {
+	path := ".store" //TODO: does this need to change?
+	filename := string(cmdWrapper.Command.Data)
+	decodeFile, err := os.Open(fmt.Sprintf("%s/%s.gob", path, filename))
+	if err != nil {
+		slog.Error("error opening store", "error", err)
+	}
+	defer decodeFile.Close()
+
+	// Create a decoder
+	decoder := gob.NewDecoder(decodeFile)
+
+	// Place to decode into
+	inmem = make(map[int64]*[]byte)
+
+	// Decode -- We need to pass a pointer otherwise inmem isn't modified
+	err = decoder.Decode(&inmem)
+	if err != nil {
+		slog.Error("error decoding into memory", "error", err)
+	}
 	return nil
 }
 
