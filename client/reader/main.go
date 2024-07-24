@@ -11,7 +11,7 @@ import (
 
 // an example of a client
 func main() {
-	key := int64(1721607920)
+	key := int64(1721699523)
 
 	file := make([]byte, 100)
 	_, err := io.ReadFull(rand.Reader, file)
