@@ -4,24 +4,24 @@ A store for storing data, using a simple key value pair
 
 #### COMMANDS
 
-##### WRITE [0]
+##### [0] WRITE
 
     cache the data in-memory
 
-##### READ [1]
+##### [1] READ
 
     read from the in-memory map
     *TODO the key right now is the unix time, but this will cause a race condition with more clients writing
 
-##### STORE [2]
+##### [2] STORE
 
     store the in-memory map into a `.gob` file on disk under the `.store` directory
 
-##### LOAD [3]
+##### [3] LOAD
 
     load a `.gob` store into memory
 
-##### MERGE [4]
+##### [4] MERGE
 
     merges a store on disk with the data in-memory
     * NEED TO IMPLEMENT
