@@ -10,7 +10,7 @@ import (
 func main() {
 	filename := "test"
 	cmd := &types.TCPCommand{
-		Command: 3,
+		Command: 2,
 		Data:    []byte(filename),
 		Key:     0,
 	}

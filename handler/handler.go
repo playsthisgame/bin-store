@@ -17,17 +17,18 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 	const (
 		write = "WRITE"
 		read  = "READ"
-		list  = "LIST"
+		list  = "LIST" // TODO: implement this?
 		store = "STORE"
 		load  = "LOAD"
+		merge = "MERGE"
 	)
 
 	cmds := make(map[int]string)
 	cmds[0] = write
 	cmds[1] = read
-	cmds[2] = list
-	cmds[3] = store
-	cmds[4] = load
+	cmds[2] = store
+	cmds[3] = load
+	cmds[4] = merge
 
 	cmd := cmdWrapper.Command.Command
 
@@ -43,6 +44,8 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 			return handleStore(cmdWrapper)
 		case load:
 			return handleLoad(cmdWrapper)
+		case merge:
+			return handleMerge(cmdWrapper)
 		}
 	}
 	return fmt.Errorf("Unknown Operation %d", int(cmd))
@@ -105,6 +108,11 @@ func handleLoad(cmdWrapper *types.TCPCommandWrapper) error {
 	if err != nil {
 		slog.Error("error decoding into memory", "error", err)
 	}
+	return nil
+}
+
+// TODO: implement this
+func handleMerge(cmdWrapper *types.TCPCommandWrapper) error {
 	return nil
 }
 
