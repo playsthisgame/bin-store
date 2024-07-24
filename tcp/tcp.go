@@ -7,9 +7,10 @@ import (
 	"log/slog"
 	"net"
 
-	"plays-tcp/types"
 	"sync"
 	"syscall"
+
+	"github.com/playsthisgame/bin-store/types"
 )
 
 type TCP struct {

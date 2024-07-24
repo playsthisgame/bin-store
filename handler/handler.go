@@ -6,8 +6,9 @@ import (
 	"log/slog"
 	"maps"
 	"os"
-	"plays-tcp/types"
-	"plays-tcp/utils"
+
+	"github.com/playsthisgame/bin-store/types"
+	"github.com/playsthisgame/bin-store/utils"
 )
 
 var inmem = make(map[int64]*[]byte)
@@ -50,7 +51,7 @@ func Handle(cmdWrapper *types.TCPCommandWrapper) error {
 		case merge:
 			return handleMerge(cmdWrapper)
 		case clear:
-			return handleClear(cmdWrapper)
+			handleClear()
 		}
 	}
 	return fmt.Errorf("Unknown Operation %d", int(cmd))
@@ -124,7 +125,7 @@ func handleMerge(cmdWrapper *types.TCPCommandWrapper) error {
 	return nil
 }
 
-func handleClear(cmdWrapper *types.TCPCommandWrapper) {
+func handleClear() {
 	inmem = make(map[int64]*[]byte)
 }
 

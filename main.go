@@ -3,8 +3,9 @@ package main
 import (
 	"log/slog"
 	"os"
-	"plays-tcp/handler"
-	"plays-tcp/tcp"
+
+	"github.com/playsthisgame/bin-store/handler"
+	"github.com/playsthisgame/bin-store/tcp"
 )
 
 func main() {

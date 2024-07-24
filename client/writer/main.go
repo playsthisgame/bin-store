@@ -5,8 +5,9 @@ import (
 	"io"
 	"log/slog"
 	"net"
-	"plays-tcp/types"
 	"time"
+
+	"github.com/playsthisgame/bin-store/types"
 )
 
 // an example of a client

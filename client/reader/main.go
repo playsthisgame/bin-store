@@ -6,7 +6,8 @@ import (
 	"log/slog"
 	"net"
 	"os"
-	"plays-tcp/types"
+
+	"github.com/playsthisgame/bin-store/types"
 )
 
 // an example of a client

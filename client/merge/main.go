@@ -3,7 +3,8 @@ package main
 import (
 	"log/slog"
 	"net"
-	"plays-tcp/types"
+
+	"github.com/playsthisgame/bin-store/types"
 )
 
 // an example of a client
