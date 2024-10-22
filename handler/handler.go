@@ -130,7 +130,7 @@ func handleClear() {
 }
 
 func loadStore(data []byte, inmem *map[int64]*[]byte) {
-	path := ".store" //TODO: does this need to change?
+	path := ".store"
 	filename := string(data)
 	decodeFile, err := os.Open(fmt.Sprintf("%s/%s.gob", path, filename))
 	if err != nil {
